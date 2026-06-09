@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>분화갑상선암(DTC) 진료지침 – ATA 2025</title>
+<style>
+  :root {
+    --bg: #f6f8fa; --surface: #ffffff; --surface2: #f0f2f5;
+    --border: #d0d7de; --accent: #0969da; --accent2: #0550ae;
+    --green: #1a7f37; --yellow: #9a6700; --red: #cf222e;
+    --orange: #bc4c00; --text: #1f2328; --text2: #57606a;
+    --strong-rec: #1a7f37; --cond-rec: #0550ae; --gps: #57606a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Pretendard','Noto Sans KR',-apple-system,sans-serif; background: var(--bg); color: var(--text); font-size: 13px; line-height: 1.5; }
+
+  /* HEADER */
+  header { background: var(--surface); border-bottom: 1px solid var(--border); padding: 12px 16px 8px; display: flex; flex-direction: column; align-items: center; position: sticky; top: 0; z-index: 100; }
+  .header-inner { width: 100%; max-width: 980px; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+  .logo-badge { background: var(--accent); color: #fff; font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 4px; letter-spacing: .5px; }
+  header h1 { font-size: 18px; font-weight: 700; }
+  .meta { color: var(--text2); font-size: 11px; }
+  .source-link { color: var(--accent2); font-size: 11px; text-decoration: none; }
+  .source-link:hover { text-decoration: underline; }
+
+  /* TABS */
+  .tab-bar { background: var(--surface); border-bottom: 1px solid var(--border); display: flex; justify-content: center; overflow-x: auto; scrollbar-width: none; position: sticky; top: 70px; z-index: 99; }
+  .tab-bar::-webkit-scrollbar { display: none; }
+  .tab-bar-inner { width: 100%; max-width: 980px; display: flex; align-items: center; gap: 2px; justify-content: center; }
+  .tab { padding: 8px 12px; font-size: 12px; color: var(--text2); cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: color .15s,border-color .15s; user-select: none; }
+  .tab:hover { color: var(--text); }
+  .tab.active { color: var(--accent2); border-bottom-color: var(--accent2); }
+  .tab-abbr-wrap { display: flex; align-items: center; padding: 4px 6px; margin-left: 4px; flex-shrink: 0; position: relative; }
+
+  /* MAIN */
+  .main { padding: 12px 16px; max-width: 980px; margin: 0 auto; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+  @media (max-width: 700px) { .grid2,.grid3 { grid-template-columns: 1fr; } }
+
+  /* CARD */
+  .card { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 10px; }
+  .card-header { background: var(--surface2); padding: 8px 12px; font-size: 12px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: .5px; border-bottom: 1px solid var(--border); cursor: pointer; display: flex; align-items: center; justify-content: space-between; user-select: none; }
+  .card-header .ch-title { display: flex; align-items: center; gap: 8px; }
+  .card-header .toggle { font-size: 14px; transition: transform .2s; }
+  .card-header.open .toggle { transform: rotate(180deg); }
+  .card-body { padding: 10px 12px; }
+  .card-body.collapsed { display: none; }
+
+  /* STAT */
+  .stat-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+  .stat-box { background: var(--surface2); border: 1px solid var(--border); border-radius: 6px; padding: 10px 14px; flex: 1; min-width: 110px; text-align: center; }
+  .stat-val { font-size: 19px; font-weight: 700; color: var(--accent2); }
+  .stat-lbl { font-size: 10px; color: var(--text2); margin-top: 2px; }
+
+  /* GRADE BADGES */
+  .grade { display: inline-block; padding: 1px 6px; border-radius: 3px; font-size: 10px; font-weight: 700; white-space: nowrap; position: relative; cursor: help; }
+  .grade-strong { background: #dafbe1; color: #116329; border: 1px solid #1a7f37; }
+  .grade-cond   { background: #ddf4ff; color: #0550ae; border: 1px solid #0550ae; }
+  .grade-gps    { background: #f6f8fa; color: #57606a; border: 1px solid #d0d7de; }
+  .grade-high   { background: #dafbe1; color: #116329; border: 1px solid #1a7f37; }
+  .grade-mod    { background: #fff8c5; color: #7d4e00; border: 1px solid #9a6700; }
+  .grade-low    { background: #ffe4c4; color: #bc4c00; border: 1px solid #bc4c00; }
+  .grade-vlow   { background: #ffebe9; color: #82071e; border: 1px solid #cf222e; }
+
+  /* TOOLTIP */
+  .grade::after { content: attr(data-tip); display: none; position: absolute; bottom: calc(100% + 6px); left: 50%; transform: translateX(-50%); background: #1f2328; color: #e6edf3; font-size: 11px; font-weight: 400; line-height: 1.5; padding: 6px 10px; border-radius: 6px; white-space: nowrap; z-index: 500; pointer-events: none; box-shadow: 0 4px 12px rgba(0,0,0,.25); }
+  .grade::before { content: ''; display: none; position: absolute; bottom: calc(100% + 1px); left: 50%; transform: translateX(-50%); border: 5px solid transparent; border-top-color: #1f2328; z-index: 501; pointer-events: none; }
+  .grade:hover::after,.grade:hover::before { display: block; }
+
+  /* REC LIST */
+  .rec-list { list-style: none; }
+  .rec-item { padding: 8px 0; border-bottom: 1px solid var(--border); display: flex; gap: 8px; align-items: flex-start; }
+  .rec-item:last-child { border-bottom: none; }
+  .rec-badges { display: flex; gap: 4px; flex-shrink: 0; margin-top: 1px; flex-direction: column; }
+  .rec-text { font-size: 12px; line-height: 1.55; }
+  .rec-text strong { color: var(--accent2); }
+  .rec-num { font-size: 10px; font-weight: 700; color: var(--text2); white-space: nowrap; margin-top: 2px; }
+
+  /* ALERT */
+  .alert { padding: 8px 12px; border-radius: 6px; font-size: 12px; margin: 8px 0; display: flex; gap: 8px; align-items: flex-start; }
+  .alert-danger  { background: #ffebe9; border-left: 3px solid var(--red);    color: #82071e; }
+  .alert-info    { background: #ddf4ff; border-left: 3px solid var(--accent2); color: #0550ae; }
+  .alert-warn    { background: #fff8c5; border-left: 3px solid var(--yellow); color: #7d4e00; }
+  .alert-success { background: #dafbe1; border-left: 3px solid var(--green);  color: #116329; }
+
+  /* TABLE */
+  .dtc-table { width: 100%; border-collapse: collapse; font-size: 11px; }
+  .dtc-table th { background: var(--surface2); color: var(--text2); padding: 6px 8px; font-size: 10px; text-transform: uppercase; letter-spacing: .3px; font-weight: 600; text-align: left; }
+  .dtc-table td { padding: 7px 8px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .dtc-table tr:last-child td { border-bottom: none; }
+  .dtc-table tr:hover td { background: rgba(0,0,0,.02); }
+  .dtc-table .section-row td { background: var(--surface2); color: var(--accent2); font-weight: 600; }
+
+  /* RISK COLORS */
+  .risk-low   { background: #dafbe1; color: #116329; font-weight: 600; text-align: center; }
+  .risk-low-i { background: #e8f5e9; color: #1a7f37; font-weight: 600; text-align: center; }
+  .risk-int   { background: #fff8c5; color: #7d4e00; font-weight: 600; text-align: center; }
+  .risk-int-h { background: #ffe4c4; color: #bc4c00; font-weight: 600; text-align: center; }
+  .risk-high  { background: #ffebe9; color: #82071e; font-weight: 600; text-align: center; }
+
+  /* ACCORDION */
+  .acc { border: 1px solid var(--border); border-radius: 6px; margin-bottom: 5px; overflow: hidden; }
+  .acc-hdr { background: var(--surface2); padding: 7px 12px; font-size: 12px; font-weight: 600; color: var(--text); cursor: pointer; display: flex; justify-content: space-between; align-items: center; user-select: none; }
+  .acc-hdr:hover { background: var(--border); }
+  .acc-hdr .arr { font-size: 11px; color: var(--text2); transition: transform .2s; }
+  .acc-hdr.open .arr { transform: rotate(180deg); }
+  .acc-body { display: none; padding: 10px 12px; font-size: 12px; line-height: 1.7; }
+
+  /* STEP */
+  .step-flow { display: flex; flex-direction: column; gap: 4px; }
+  .step-box { display: flex; align-items: flex-start; gap: 10px; padding: 8px 10px; background: var(--surface2); border-radius: 6px; border-left: 3px solid var(--accent); }
+  .step-num { background: var(--accent2); color: #fff; font-size: 11px; font-weight: 700; min-width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .step-content { font-size: 12px; }
+  .step-content strong { color: var(--accent2); }
+
+  /* PILL */
+  .pill { display: inline-block; padding: 1px 7px; border-radius: 10px; font-size: 10px; font-weight: 600; white-space: nowrap; }
+  .pill-new { background: #dafbe1; color: var(--green); }
+  .pill-upd { background: #ddf4ff; color: var(--accent2); }
+  .pill-key { background: #f6f8fa; border: 1px solid var(--border); color: var(--text2); }
+
+  /* ABBR */
+  .abbr-grid-main { display: grid; grid-template-columns: repeat(auto-fill,minmax(230px,1fr)); gap: 6px; }
+  .abbr-item { background: var(--surface2); border: 1px solid var(--border); border-radius: 5px; padding: 6px 10px; display: flex; flex-direction: column; gap: 2px; }
+  .abbr-term { font-weight: 700; color: var(--accent2); font-size: 12px; font-family: 'Courier New',monospace; }
+  .abbr-def  { font-size: 11px; color: var(--text2); line-height: 1.45; }
+
+  /* MISC */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: #c8d0d9; border-radius: 3px; }
+  small { color: var(--text2); font-size: 10px; }
+  .danger-text { color: var(--red); }
+  .success-text { color: var(--green); }
+  .info-text { color: var(--accent2); }
+  .warn-text { color: var(--yellow); }
+  .sec-sep { height: 1px; background: var(--border); margin: 10px 0; }
+  .tag-new  { display: inline-block; background: #dafbe1; color: var(--green); font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; margin-left: 4px; vertical-align: middle; }
+  .tag-upd  { display: inline-block; background: #ddf4ff; color: var(--accent2); font-size: 9px; font-weight: 700; padding: 1px 5px; border-radius: 3px; margin-left: 4px; vertical-align: middle; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div style="display:flex;align-items:center;gap:8px;justify-content:center">
+      <span class="logo-badge">ATA 2025</span>
+      <h1>분화갑상선암(DTC) 진료지침</h1>
+    </div>
+    <div style="text-align:center;margin-top:2px;line-height:1.6">
+      <a href="https://doi.org/10.1177/10507256251363120" class="source-link" target="_blank">Thyroid® 2025;35:841–985 ↗</a>
+      <span class="meta"> · Ringel MD, Sosa JA et al. ATA 2025</span><br>
+      <span style="font-size:10px;color:var(--text2);font-style:italic">This tool is not officially endorsed by ATA</span>
+    </div>
+  </div>
+</header>
+
+<div class="tab-bar">
+  <div class="tab-bar-inner">
+    <div class="tab active" onclick="showTab('overview')">🏠 개요</div>
+    <div class="tab" onclick="showTab('staging')">📊 병리·병기</div>
+    <div class="tab" onclick="showTab('surgery')">🔪 수술</div>
+    <div class="tab" onclick="showTab('rai')">☢️ RAI</div>
+    <div class="tab" onclick="showTab('followup')">📈 추적관찰</div>
+    <div class="tab" onclick="showTab('advanced')">💊 진행성 DTC</div>
+    <div class="tab" onclick="showTab('special')">🤰 특수상황</div>
+    <div class="tab" onclick="showTab('recs')">📋 권고 전체</div>
+    <div class="tab-abbr-wrap">
+      <div style="position:relative;display:flex;align-items:center;flex-shrink:0">
+        <span style="position:absolute;left:8px;color:var(--text2);font-size:12px;pointer-events:none">🔍</span>
+        <input id="abbr-input" type="text" placeholder="약어 검색" oninput="filterAbbr(this.value)"
+          style="background:var(--surface2);border:1px solid var(--border);border-radius:6px;padding:4px 8px 4px 26px;color:var(--text);font-size:12px;width:130px;outline:none;"
+          onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
+        <span id="abbr-count" style="position:absolute;right:7px;font-size:10px;color:var(--text2);pointer-events:none"></span>
+      </div>
+      <div id="abbr-dropdown" style="display:none;position:fixed;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:8px;width:480px;max-height:360px;overflow-y:auto;z-index:300;box-shadow:0 8px 24px rgba(0,0,0,.12)">
+        <div id="abbr-grid-drop" style="display:grid;grid-template-columns:1fr"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ═══════════ TAB 1: 개요 ═══════════ -->
+<div id="tab-overview" class="panel active">
+
+  <div class="stat-row">
+    <div class="stat-box"><div class="stat-val" style="color:var(--accent2)">44,020</div><div class="stat-lbl">2024년 미국 갑상선암 신규 환자 수</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--green)">&gt;90%</div><div class="stat-lbl">전체 갑상선암 중 DTC 비율</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--yellow)">1–6.5%</div><div class="stat-lbl">PTC 사망률</div></div>
+    <div class="stat-box"><div class="stat-val" style="color:var(--orange)">15–35%</div><div class="stat-lbl">PTC 전체 재발률</div></div>
+  </div>
+
+  <!-- DATA 프레임워크 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔑</span> DATA 임상결정 프레임워크 <span class="tag-new">NEW 2025</span></div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info" style="margin-bottom:8px">
+        <span>📌</span>
+        <div>2025 ATA 가이드라인은 진단부터 전체 경과에 걸쳐 활용 가능한 <strong>DATA 프레임워크</strong>를 도입했다. 진단 시점부터 경과 내내 반복 적용한다.</div>
+      </div>
+      <div class="step-flow">
+        <div class="step-box"><div class="step-num">D</div><div class="step-content"><strong>Diagnosis (진단)</strong>: FNA 결과 (Bethesda VI) 또는 수술 후 조직병리 확인. 분자검사 결과 포함.</div></div>
+        <div class="step-box"><div class="step-num">A</div><div class="step-content"><strong>risk/benefit Assessment (위험-이익 평가)</strong>: 재발 위험 분류, 치료 옵션의 위험-이익, 환자 개별 요소 통합 평가.</div></div>
+        <div class="step-box"><div class="step-num">T</div><div class="step-content"><strong>Treatment decisions (치료 결정)</strong>: 수술 범위, RAI 여부, TSH 억제 목표치 등. 다학제 공유 의사결정.</div></div>
+        <div class="step-box"><div class="step-num">A</div><div class="step-content"><strong>response Assessment (반응 평가)</strong>: 2025 ATA 반응 기준 적용 → 이후 치료 강도·모니터링 계획 재조정.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DTC 종류 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> DTC 병리 분류 (WHO 5판, 2022)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="dtc-table">
+        <tr><th>분류</th><th>특징</th><th>주요 분자이상</th><th>비고</th></tr>
+        <tr>
+          <td><strong>PTC</strong><br><small>유두갑상선암</small></td>
+          <td>가장 흔함; 핵 특징적. 생존율 96%(5y)/93%(10y)</td>
+          <td>BRAF<sup>V600E</sup>(가장 흔), RAS, RET 융합</td>
+          <td>다양한 아형: 고세포, 원주세포, hobnail 등</td>
+        </tr>
+        <tr>
+          <td><strong>IEFVPTC</strong><br><small>침습성 피막형 여포변이 PTC</small></td>
+          <td>피막 침범 있는 여포형 PTC; FTC와 유사 행동</td>
+          <td>RAS (NRAS 우세)</td>
+          <td>혈관 침범 및 원격전이 가능</td>
+        </tr>
+        <tr>
+          <td><strong>FTC</strong><br><small>여포갑상선암</small></td>
+          <td>피막·혈관 침범으로 진단. PTC 핵 특징 없음</td>
+          <td>RAS, PAX8::PPARγ, EIF1AX, DICER1</td>
+          <td>최소침범형/혈관침범형/광범위침범형</td>
+        </tr>
+        <tr>
+          <td><strong>OTC</strong><br><small>호산성갑상선암 (구: Hürthle 세포)</small></td>
+          <td>≥75% 호산성 세포; FTC와 별개 분류</td>
+          <td>반수체 게놈, 미토콘드리아 DNA 돌연변이, DAXX/ATRX</td>
+          <td>RAI 불응성 빈번, ~3% of DTC</td>
+        </tr>
+        <tr>
+          <td><strong>NIFTP</strong></td>
+          <td>피막 침범 없는 여포형; 저위험 신생물</td>
+          <td>RAS</td>
+          <td><span class="tag-upd">2025 NEW</span>: 악성으로 분류 안 함; R1 권고</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2015 vs 2025 주요 변경 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🆕</span> 2015→2025 주요 변경사항</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="dtc-table">
+        <tr><th>영역</th><th>2015 가이드라인</th><th>2025 가이드라인 (주요 변경)</th></tr>
+        <tr><td>임상 프레임워크</td><td>없음</td><td><strong>DATA 프레임워크</strong> 신규 도입</td></tr>
+        <tr><td>병리분류</td><td>FTC 아형</td><td>OTC를 FTC와 <strong>별개 3번째 DTC</strong>로 분리 (WHO 5판)</td></tr>
+        <tr><td>RAI 저위험</td><td>저위험 remnant ablation 논란</td><td><strong>ATA 저위험: routine remnant ablation 불필요</strong> (강력권고, 높은 근거)</td></tr>
+        <tr><td>재발 위험 분류</td><td>저/중간/고위험 3단계</td><td><strong>저/저-중간/중간-고/고위험 4단계</strong> 세분화</td></tr>
+        <tr><td>반응 기준</td><td>4가지 반응 (excellent/indeterminate/biochemically incomplete/structurally incomplete)</td><td>기준 유지, <strong>수치 기준 일부 업데이트</strong>, 반엽절제 기준 추가</td></tr>
+        <tr><td>진행성 DTC</td><td>Lenvatinib/sorafenib 1차</td><td>RAIR에서 <strong>분자검사 필수</strong> 후 targeted therapy (NTRK, RET, ALK, BRAF) 우선</td></tr>
+        <tr><td>2차 치료</td><td>—</td><td><strong>Cabozantinib 2차 치료</strong> 강력권고 (COSMIC-311 근거)</td></tr>
+        <tr><td>모니터링 탈강화</td><td>제한적</td><td>저위험 + 지속 excellent response 5–8년 → <strong>초음파 중단 가능</strong>; 10–15년 → <strong>생화학 모니터링 종료 가능</strong></td></tr>
+        <tr><td>유전 검사</td><td>제한적</td><td><strong>생식세포 유전검사 권고 확대</strong> (R2–R5)</td></tr>
+        <tr><td>정밀의료</td><td>RAI 불응시 MKI</td><td>분자검사 → 표적치료 우선, NTRK/RET/ALK/BRAF별 1차 치료 권고</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- GRADE 설명 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📏</span> 권고 등급 체계 (Modified GRADE)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="grid2">
+        <div>
+          <div style="font-weight:600;font-size:12px;color:var(--accent2);margin-bottom:6px">권고 강도</div>
+          <table class="dtc-table">
+            <tr><th>등급</th><th>정의</th></tr>
+            <tr><td><span class="grade grade-strong">Strong</span></td><td>강력권고: 대부분의 환자에서 권고 준수 적절</td></tr>
+            <tr><td><span class="grade grade-cond">Conditional</span></td><td>조건부권고: 환자 가치관, 상황에 따라 달라질 수 있음</td></tr>
+            <tr><td><span class="grade grade-gps">GPS</span></td><td>Good Practice Statement: 근거는 제한적이나 임상 합의</td></tr>
+          </table>
+        </div>
+        <div>
+          <div style="font-weight:600;font-size:12px;color:var(--accent2);margin-bottom:6px">근거 확실성</div>
+          <table class="dtc-table">
+            <tr><th>등급</th><th>의미</th></tr>
+            <tr><td><span class="grade grade-high">High</span></td><td>높음: 추가 연구로 효과 추정치 변화 가능성 낮음</td></tr>
+            <tr><td><span class="grade grade-mod">Moderate</span></td><td>중등: 추가 연구로 추정치 변화 가능</td></tr>
+            <tr><td><span class="grade grade-low">Low</span></td><td>낮음: 추가 연구로 추정치 변화 가능성 높음</td></tr>
+            <tr><td><span class="grade grade-vlow">Very Low</span></td><td>매우 낮음: 효과 추정치 불확실</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /overview -->
+
+<!-- ═══════════ TAB 2: 병리·병기·위험분류 ═══════════ -->
+<div id="tab-staging" class="panel">
+
+  <!-- NIFTP -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧫</span> NIFTP — 갑상선암 아닌가? (R1)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-success">
+        <span>✅</span>
+        <div><strong>R1 (GPS)</strong>: NIFTP는 임상적으로 갑상선암으로 분류하지 않는다. 단, 분자검사·조직병리에서 침습 소견 및 고위험 변이 배제가 전제.</div>
+      </div>
+      <table class="dtc-table" style="margin-top:8px">
+        <tr><th colspan="2">NIFTP 진단 기준 (모두 충족 필요)</th></tr>
+        <tr><td>A</td><td>피막 형성 또는 명확한 경계</td></tr>
+        <tr><td>B</td><td>여포 성장 패턴 (유두 없음, 사종체 없음, 고형/소주/도상 &lt;30%)</td></tr>
+        <tr><td>C</td><td>PTC 핵 특징</td></tr>
+        <tr><td>D</td><td>침습 특징 없음 (피막/혈관 침범 없음)</td></tr>
+        <tr><td>E</td><td>종양 괴사 없음</td></tr>
+        <tr><td>F</td><td>고유사분열 없음 (&lt;3개/10 HPF)</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2025 재발 위험 분류 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📊</span> 2025 ATA 재발 위험 분류 (R28) <span class="tag-upd">UPDATED</span></div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info" style="margin-bottom:8px">
+        <span>📌</span>
+        <div><strong>R28A (Strong, Moderate)</strong>: 2025 ATA 위험 분류 체계 사용 권고. AJCC 병기 + 조직병리 + 수술 후 영상/Tg/TgAb 통합 평가.</div>
+      </div>
+      <div style="overflow-x:auto">
+      <table class="dtc-table" style="min-width:600px">
+        <tr><th>위험</th><th>재발률</th><th>PTC 주요 특징</th></tr>
+        <tr>
+          <td><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px;background:#dafbe1;color:#116329">저위험<br>&lt;10%</span></td>
+          <td class="risk-low">&lt;10%</td>
+          <td>
+            • 갑상선 내 PTC, 갑상선 피막 침범 없음<br>
+            • pT1–T2 (단, 침습적 IEFVPTC 포함 시 재분류)<br>
+            • cN0 또는 pN1 (5개 이하 미세 LN 전이, &lt;2mm, ENE 없음)<br>
+            • BRAF<sup>V600E</sup> 없이 또는 저위험 분자이상<br>
+            • 갑상선 내 FTC (최소침범형/혈관침범 없음)
+          </td>
+        </tr>
+        <tr>
+          <td><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px;background:#e8f5e9;color:#1a7f37">저-중간위험<br>10–15%</span></td>
+          <td class="risk-low-i">10–15%</td>
+          <td>
+            • 미세 갑상선 피막 외 침범 (T3a)<br>
+            • pN1 (&gt;5개 LN 전이, &lt;3cm), ENE 없음<br>
+            • 침습적 IEFVPTC (최소침범형)<br>
+            • FTC 최소침범 + 소수 혈관침범 (1–3개 혈관)
+          </td>
+        </tr>
+        <tr>
+          <td><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px;background:#fff8c5;color:#7d4e00">중간-고위험<br>16–30%</span></td>
+          <td class="risk-int">16–30%</td>
+          <td>
+            • 총 갑상선 피막 외 침범 (T3b) 또는 수술 절제연 양성<br>
+            • pN1 (ENE 있음, 또는 LN ≥3cm)<br>
+            • 고위험 조직형 (고세포, 원주세포, hobnail, 확산경화형, 고형/소주형)<br>
+            • FTC 광범위 혈관침범 (≥4개), 광범위침범형 FTC<br>
+            • BRAF<sup>V600E</sup> + TERT promoter 돌연변이
+          </td>
+        </tr>
+        <tr>
+          <td><span style="display:inline-block;padding:2px 8px;border-radius:4px;font-weight:700;font-size:11px;background:#ffebe9;color:#82071e">고위험<br>&gt;30%</span></td>
+          <td class="risk-high">&gt;30%</td>
+          <td>
+            • 원격전이 (M1)<br>
+            • 불완전 절제 (R2)<br>
+            • T4 (기도·식도·주요 혈관 침범)<br>
+            • 분화도 저하 (DHGTC, PDTC)
+          </td>
+        </tr>
+      </table>
+      </div>
+      <div class="alert alert-warn" style="margin-top:8px">
+        <span>⚠️</span>
+        <div>OTC는 LN 전이가 드물어 별도 고려. 재발 위험은 수술 후 Tg/TgAb, 영상 결과를 포함한 <strong>동적 재평가</strong>로 지속 업데이트해야 한다.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AJCC 병기 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🏷️</span> AJCC 8판 병기 (생존 예측용)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info" style="margin-bottom:8px">
+        <span>📌</span>
+        <div>병기는 <strong>생존 예측</strong>용; <strong>재발 위험 분류</strong>는 2025 ATA 체계 사용. 두 시스템은 상호보완적.</div>
+      </div>
+      <table class="dtc-table">
+        <tr><th>병기</th><th>&lt;55세</th><th>≥55세</th><th>10년 생존율</th></tr>
+        <tr><td>I</td><td>모든 T, 모든 N, M0</td><td>T1–T2, N0, M0</td><td class="risk-low">~99%</td></tr>
+        <tr><td>II</td><td>모든 T, 모든 N, M1</td><td>T1–T2, N1, M0<br>T3, 모든 N, M0</td><td class="risk-low-i">~98%</td></tr>
+        <tr><td>III</td><td>해당 없음</td><td>T4a, 모든 N, M0</td><td class="risk-int">~93%</td></tr>
+        <tr><td>IVA</td><td>해당 없음</td><td>T4b, 모든 N, M0</td><td class="risk-int-h">~80%</td></tr>
+        <tr><td>IVB</td><td>해당 없음</td><td>모든 T, 모든 N, M1</td><td class="risk-high">~26%</td></tr>
+      </table>
+      <div class="alert alert-success" style="margin-top:8px">
+        <span>✅</span>
+        <div>8판은 7판 대비 20–30% 환자 하향 병기화. 7판에서 5년 나이 기준 → 8판에서 55세 기준으로 변경.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 반응 기준 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📉</span> 치료 반응 기준 (R29, Table 9)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info" style="margin-bottom:8px">
+        <span>📌</span>
+        <div><strong>R29 (Strong, Moderate)</strong>: 치료 반응 기준을 ATA 재발 위험 분류와 함께 사용하여 추가 치료 강도 및 모니터링 계획 결정.</div>
+      </div>
+      <div style="overflow-x:auto">
+      <table class="dtc-table" style="min-width:580px">
+        <tr><th>반응</th><th>전갑상선절제 + RAI</th><th>전갑상선절제 (RAI 없음)</th><th>반엽절제 (NEW)</th><th>TSH 목표</th></tr>
+        <tr>
+          <td><span style="color:var(--green);font-weight:700">Excellent</span></td>
+          <td>비자극 Tg &lt;0.2 또는 자극 Tg &lt;1, 음성 영상</td>
+          <td>비자극 Tg &lt;2.5</td>
+          <td>잔여엽 정상 결절 또는 양성 FNA + 정상 LN</td>
+          <td>정상 범위</td>
+        </tr>
+        <tr>
+          <td><span style="color:var(--yellow);font-weight:700">Indeterminate</span></td>
+          <td colspan="3">비특이적 영상 소견 또는 경미 Tg 상승, 안정/감소하는 TgAb</td>
+          <td>정상~경미 억제</td>
+        </tr>
+        <tr>
+          <td><span style="color:var(--orange);font-weight:700">Biochem. Incomplete</span></td>
+          <td colspan="2">비자극 Tg ≥1(RAI후) 또는 ≥2.5(RAI없음), 구조적 병변 없음. 상승/증가 TgAb</td>
+          <td>Tg 상승 또는 TgAb 상승</td>
+          <td>경미 억제 (0.1–0.5)</td>
+        </tr>
+        <tr>
+          <td><span style="color:var(--red);font-weight:700">Structural Incomplete</span></td>
+          <td colspan="3">영상에서 국소/원격 병변 지속 또는 신규 확인</td>
+          <td>억제 &lt;0.1</td>
+        </tr>
+      </table>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /staging -->
+
+<!-- ═══════════ TAB 3: 수술 ═══════════ -->
+<div id="tab-surgery" class="panel">
+
+  <!-- 수술 전 검사 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔍</span> 수술 전 검사·적응증</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list">
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R6</span><span class="grade grade-gps" data-tip="Good Practice Statement">GPS</span></div>
+          <div class="rec-text"><strong>고용량 수술자 선호</strong>: 갑상선절제술 합병증률은 수술량과 반비례. 총갑상선절제 vs 반엽절제: 고용량 수술자에서도 각각 14.5% vs 7.6%. 가능하면 경험 많은 술자에게 의뢰.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R7</span><span class="grade grade-strong" data-tip="Strong / Moderate">Strong</span></div>
+          <div class="rec-text"><strong>수술 전 경부 초음파</strong>: 갑상선 및 경부 림프절 평가. <strong>FNA 적응증</strong>: 의심 LN 최소지름 &gt;8–10 mm, 관리 방향 변화 가능 시. FNA-Tg washout 추가 가능 (NPV 99.4%).</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R8</span><span class="grade grade-cond" data-tip="Conditional / Low">Cond.</span></div>
+          <div class="rec-text"><strong>단면 영상 또는 18FDG-PET/CT</strong>: 임상적/초음파상 T3b–T4 또는 임상적 N1b, 원격전이 의심 시에만 선택적 적용.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R9</span><span class="grade grade-cond" data-tip="Conditional / Low">Cond.</span></div>
+          <div class="rec-text"><strong>수술 전 혈청 Tg</strong>: 일상적 측정 권고하지 않음. 높은 수술 전 Tg가 수술 후 더 민감한 추적을 예측할 수 있으나 근거 부족.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R10</span><span class="grade grade-cond" data-tip="Conditional / Low">Cond.</span></div>
+          <div class="rec-text"><strong>수술 전 체세포 분자검사</strong>: cT1–T2 cN0에서 수술 범위 결정에 고려 가능. BRAF<sup>V600E</sup>+TERT promoter 또는 TP53 동반 시 전절제 방향 전환 고려.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 능동 감시 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>👁️</span> 능동 감시 (Active Surveillance) (R11–R14)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-info" style="margin-bottom:8px">
+        <span>📌</span>
+        <div><strong>R11</strong>: 갑상선 내 저위험 T1a PTC(≤1 cm)에서 적절한 환자에게 수술의 대안으로 능동 감시 권고 가능. 단, 환자 동의·다학제 합의 필요.</div>
+      </div>
+      <div class="grid2">
+        <div>
+          <div style="font-weight:600;font-size:12px;color:var(--green);margin-bottom:5px">능동 감시 적합 환자</div>
+          <ul style="list-style:none;font-size:12px;line-height:1.8">
+            <li>• 확인된 갑상선 내 PTC ≤1 cm</li>
+            <li>• 고위험 조직형 없음</li>
+            <li>• 기도·식도·혈관 인접 없음 (단, 최근 연구에서 관련성 낮음)</li>
+            <li>• 고령 환자 (&gt;60세): 종양 성장 가능성 현저히 낮음</li>
+            <li>• 동반질환으로 수술 위험 높은 환자</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-weight:600;font-size:12px;color:var(--red);margin-bottom:5px">수술 전환 고려 기준 (R14)</div>
+          <ul style="list-style:none;font-size:12px;line-height:1.8">
+            <li>• 종양 크기 증가 ≥3 mm (또는 ≥50% 부피 증가)</li>
+            <li>• 새로운 LN 전이 확인</li>
+            <li>• 임상적 진행 증거</li>
+            <li>• 환자 선호도 변경</li>
+          </ul>
+          <div class="alert alert-warn" style="margin-top:6px">
+            <span>⚠️</span>
+            <div><strong>R13</strong>: 능동 감시 중 혈청 Tg·TgAb 측정은 일상적으로 권고하지 않음 (예측 가치 낮음).</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 수술 범위 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>✂️</span> 수술 범위 결정 (R15)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div style="overflow-x:auto">
+      <table class="dtc-table" style="min-width:500px">
+        <tr><th>임상 병기 (AJCC 8판)</th><th>권장 수술 범위</th><th>권고 등급</th></tr>
+        <tr><td>cT1N0M0 단측</td><td><strong>반엽절제</strong></td><td><span class="grade grade-strong">Strong / Moderate</span></td></tr>
+        <tr><td>cT1(m)N0M0 양측</td><td>전갑상선절제</td><td><span class="grade grade-strong">Strong / Moderate</span></td></tr>
+        <tr><td>cT2N0M0 단측</td><td><strong>반엽절제 또는 전절제</strong> (공유결정)</td><td><span class="grade grade-cond">Conditional / Moderate</span></td></tr>
+        <tr><td>cT2(m)N0M0 양측</td><td>전갑상선절제</td><td><span class="grade grade-strong">Strong / Moderate</span></td></tr>
+        <tr><td>cT3–4 또는 cN1 또는 cM1</td><td><strong>전갑상선절제</strong></td><td><span class="grade grade-strong">Strong / Moderate</span></td></tr>
+      </table>
+      </div>
+      <div class="alert alert-info" style="margin-top:8px">
+        <span>💡</span>
+        <div>T2 단측에서 반엽절제 선호 근거: 낮은 합병증률 (고용량 수술자 반엽절제 7.6% vs 전절제 14.5%). 단, RAI 계획 또는 강화 생화학 추적이 필요한 경우 전절제 선택.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 림프절 절제 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🫁</span> 림프절 절제 (R19–R20)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul class="rec-list">
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R19</span><span class="grade grade-cond" data-tip="Conditional / Low">Cond.</span></div>
+          <div class="rec-text"><strong>예방적 중앙 림프절 절제 (pCND)</strong>: T3–T4 또는 cN1b에서 선택적으로 고려. T1–T2 cN0 PTC에서는 일상적 pCND 권고하지 않음. 반엽절제 시 pCND 일반적으로 불필요.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R20</span><span class="grade grade-strong" data-tip="Strong / Moderate">Strong</span></div>
+          <div class="rec-text"><strong>치료적 중앙 및 측방 림프절 절제</strong>: 수술 전 영상 또는 수술 중 확인된 전이 LN → 구획별 완전 절제. 측방: Levels IIA, III, IV, VB. FNA-Tg 양성 LN도 포함.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 수술 후 조직병리 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> 조직병리 보고 필수 항목 (R27)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="alert alert-info">
+        <span>📌</span>
+        <div><strong>R27 (GPS)</strong>: AJCC 병기용 필수 항목 + 위험 평가용 추가 정보 포함 필요</div>
+      </div>
+      <table class="dtc-table" style="margin-top:8px">
+        <tr><th>항목</th><th>상세</th></tr>
+        <tr><td>절제연</td><td>R0/R1/R2 분류, 미세·육안 침범 여부</td></tr>
+        <tr><td>혈관 침범</td><td>유무 + <strong>침범 혈관 수</strong> (위험 분류에 중요)</td></tr>
+        <tr><td>림프절</td><td>검사 수, 침범 수, 최대 전이 크기, <strong>ENE(피막외 침범)</strong> 유무</td></tr>
+        <tr><td>조직 아형</td><td>고위험형 (고세포, 원주세포, hobnail) 명시</td></tr>
+        <tr><td>미토시스/괴사</td><td>고등급 여포세포 기원 비ATC 진단 기준 포함</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /surgery -->
+
+<!-- ═══════════ TAB 4: RAI ═══════════ -->
+<div id="tab-rai" class="panel">
+
+  <div class="alert alert-warn">
+    <span>⚠️</span>
+    <div><strong>2025 핵심 변경</strong>: ATA 저위험 DTC에서 <strong>잔여 조직 소각(remnant ablation)은 일상적으로 권고하지 않는다</strong> (강력권고, 높은 근거). RAI 결정은 재발 위험 분류 기반.</div>
+  </div>
+
+  <!-- RAI 적응증 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>☢️</span> RAI 적응증 (R32) — 위험도별 정책</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list">
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R32A</span><span class="grade grade-strong" data-tip="Strong / High">Strong<br>High</span></div>
+          <div class="rec-text"><strong class="danger-text">ATA 저위험: RAI 잔여소각 일상적으로 불필요</strong>. 전갑상선절제 후 저위험 DTC에서 remnant ablation 권고하지 않음.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R32B</span><span class="grade grade-cond" data-tip="Conditional / Low">Cond.<br>Low</span></div>
+          <div class="rec-text"><strong>저-중간위험 및 중간-고위험</strong>: RAI 보조요법 <em>고려 가능</em>. 임상 상황, 재발 위험, 환자 선호도 통합 고려.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R32C</span><span class="grade grade-strong" data-tip="Strong / Moderate">Strong<br>Mod.</span></div>
+          <div class="rec-text"><strong>ATA 고위험: RAI 일상적으로 권고</strong>. 전갑상선절제 후 고위험 DTC에서 표준 치료.</div>
+        </li>
+      </ul>
+      <div class="alert alert-info" style="margin-top:6px">
+        <span>💡</span>
+        <div>OTC의 RAI 감수성은 불확실 (R33, Conditional/VeryLow). 진단 WBS로 요오드 친화도 확인 후 결정 고려.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RAI 준비 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💉</span> RAI 준비 (R34–R35)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list">
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R34A</span><span class="grade grade-strong" data-tip="Strong / High">Strong<br>High</span></div>
+          <div class="rec-text"><strong>rhTSH 자극 선호</strong>: 잔여소각 또는 보조 RAI 계획 시 갑상선호르몬 중단보다 rhTSH 자극 선호. 생활의 질 우수, 효과 동등.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R34C/D</span><span class="grade grade-gps">GPS</span></div>
+          <div class="rec-text">호르몬 중단 계획 시: LT4 중단 3–4주 전; LT3 대체 후 LT3 최소 2주 중단. <strong>목표 TSH &gt;30 mIU/L</strong>.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R35</span><span class="grade grade-gps">GPS</span></div>
+          <div class="rec-text"><strong>저요오드 식이</strong>: RAI 전 약 1–2주간 &lt;50 mcg/일 저요오드 식이 권고. 무작위 임상 시험 없으나 임상 합의.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 진단 WBS / Post-therapy -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🖥️</span> 진단 WBS / 치료 후 WBS / SPECT-CT (R36–R38)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul class="rec-list">
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R36</span><span class="grade grade-cond" data-tip="Conditional / Low">Cond.</span></div>
+          <div class="rec-text"><strong>치료 전 진단 WBS</strong>: ¹²³I 또는 저용량 ¹³¹I WBS 고려 가능 (치료 계획 수정에 25–49% 영향). 고용량(≥7.4 GBq) 계획 시 특히 유용.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R37</span><span class="grade grade-strong" data-tip="Strong / Moderate">Strong</span></div>
+          <div class="rec-text"><strong>치료 후 WBS 시행</strong>: ¹³¹I 치료 후 post-therapy scan 시행. 예후 정보 + 잔여/전이 병변 확인 (치료 후 2–10일). Tg 음성에서도 6.3% 전이 확인.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R38</span><span class="grade grade-cond" data-tip="Conditional / Low">Cond.</span></div>
+          <div class="rec-text"><strong>SPECT/CT 병합</strong>: 가능한 경우 진단 또는 치료 후 WBS에 SPECT/CT 추가 권고. 악성/양성 감별 정확도 향상 (41/71명에서 추가 정보).</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 원격전이 RAI 용량 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📐</span> 전이성 DTC RAI 용량 전략 (R55–R58)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <table class="dtc-table">
+        <tr><th>적응증</th><th>권장 용량</th><th>주의</th></tr>
+        <tr><td>국소/원격 전이<br>(R55)</td><td>경험적 3.7–7.4 GBq (100–200 mCi)<br>또는 선량측정 기반</td><td><strong>&gt;70세 또는 신부전:</strong> &gt;5.5 GBq (150 mCi) 투여 전 선량측정 필수 (R55A, Strong)</td></tr>
+        <tr><td>폐 미세전이<br>(R56)</td><td>경험적 3.7–7.4 GBq 또는 선량측정<br>(48시간 전신 보유 &lt;2.96 GBq)</td><td>RAI 친화도 유지 시 반복 가능; 골수 억제·폐섬유화 모니터링</td></tr>
+        <tr><td>골 전이<br>(R57)</td><td>경험적 3.7–7.4 GBq 또는 선량측정<br>뼈 지향 치료 병용</td><td>생존 개선 근거 있음 (Strong, Low). 다학제 접근.</td></tr>
+        <tr><td>Tg↑, WBS음성<br>(R58)</td><td>자극 Tg &lt;10 (THW) 또는 &lt;5 (rhTSH): 경과관찰<br>유의한 Tg 상승 또는 구조적 진행: 경험적 RAI 고려</td><td>경험적 RAI 효과 제한적; 구조적 병변 탐색 우선</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- RAI 불응성 정의 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🚫</span> RAI 불응성(RAIR) DTC 정의 (R59)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-danger">
+        <span>⛔</span>
+        <div><strong>R59B (GPS)</strong>: RAIR 확인 시 추가 경험적 RAI 투여 금지. 다른 치료 고려.</div>
+      </div>
+      <div style="margin-top:8px">
+        <div style="font-weight:600;font-size:12px;color:var(--red);margin-bottom:5px">강한 RAIR 기준 (1가지 이상)</div>
+        <ul style="list-style:none;font-size:12px;line-height:1.9">
+          <li>① 치료 후 WBS에서 구조적 병변에 RAI 섭취 없음</li>
+          <li>② RAI 투여 후 6개월 이내 병변 진행</li>
+          <li>③ 같은 환자에서 일부 병변만 RAI 친화도 있음</li>
+        </ul>
+        <div style="font-weight:600;font-size:12px;color:var(--orange);margin-top:8px;margin-bottom:5px">RAI 감수성 저하 보조 기준</div>
+        <ul style="list-style:none;font-size:12px;line-height:1.9">
+          <li>• 18FDG-PET/CT 양성 병변</li>
+          <li>• OTC 조직형</li>
+          <li>• 고위험 분자이상 (BRAF<sup>V600E</sup>+TERT, TP53 등)</li>
+          <li>• 누적 RAI 용량에도 Tg 상승 지속</li>
+        </ul>
+        <div class="alert alert-warn" style="margin-top:6px">
+          <span>⚠️</span>
+          <div><strong>R59A (GPS)</strong>: RAI 투여를 받지 않은 환자에서는 RAIR을 진단할 수 없다. 적응증 있는 환자에서 소각/치료 RAI 먼저 시행 후 친화도 판단.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /rai -->
+
+<!-- ═══════════ TAB 5: 추적관찰 ═══════════ -->
+<div id="tab-followup" class="panel">
+
+  <!-- TSH 억제 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧪</span> TSH 억제 목표 (R45–R46)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <table class="dtc-table">
+        <tr><th>환자 상황</th><th>TSH 목표</th><th>권고</th></tr>
+        <tr><td>고위험 또는 Structural Incomplete 반응</td><td class="risk-high"><strong>&lt;0.1 mIU/L</strong></td><td><span class="grade grade-strong">Strong / Mod</span></td></tr>
+        <tr><td>중간-고위험 또는 Biochem. Incomplete</td><td class="risk-int-h"><strong>0.1–0.5 mIU/L</strong></td><td><span class="grade grade-strong">Strong / Mod</span></td></tr>
+        <tr><td>저위험/저-중간위험 + Excellent/Indeterminate 반응</td><td class="risk-low"><strong>정상 범위 (0.5–2.0)</strong></td><td><span class="grade grade-strong">Strong / High</span></td></tr>
+        <tr><td>반엽절제 후 (갑상선호르몬 치료 없음)</td><td class="risk-low">정상 범위 유지</td><td><span class="grade grade-gps">GPS</span></td></tr>
+      </table>
+      <div class="alert alert-warn" style="margin-top:8px">
+        <span>⚠️</span>
+        <div><strong>R46 (Conditional/Low)</strong>: 저위험/중간위험 + 재발 없는 경우 장기 TSH 억제 권고하지 않음. 위험-이익 재평가 필요 (심방세동, 골밀도 저하, QoL 영향).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tg 모니터링 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔬</span> 혈청 Tg 추적 (R30, R47)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list">
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R30A</span><span class="grade grade-cond" data-tip="Conditional / Moderate">Cond.</span></div>
+          <div class="rec-text"><strong>전갑상선절제 후 6–12주 Tg 측정</strong>: 갑상선호르몬 복용 중 수술 후 Tg. RAI 시행 전 반응 평가. 자극 Tg ≥30 ng/mL: 10년 생존 78% vs &lt;30 ng/mL: 95%.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R47A</span><span class="grade grade-gps">GPS</span></div>
+          <div class="rec-text"><strong>Tg 측정은 BCR457 기준 교정된 방법 사용</strong>. <strong>TgAb는 매번 Tg와 함께 정량 측정</strong>. TgAb 방해로 인한 Tg 과소평가 방지.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R47B</span><span class="grade grade-strong" data-tip="Strong / Moderate">Strong</span></div>
+          <div class="rec-text"><strong>전갑상선절제 후 Tg (약 복용 중)</strong>: 재발 모니터링 및 반응 평가에 사용. RAI 시행 후 예측력 더 높음.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 영상 추적 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📷</span> 경부 초음파 및 영상 추적 (R31, R49–R51)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list">
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R31A</span><span class="grade grade-strong" data-tip="Strong / Moderate">Strong</span></div>
+          <div class="rec-text"><strong>경부 초음파: 대부분 DTC의 1차 영상 감시</strong>. 갑상선 상(床) + 중앙/측방 경부 LN 평가. 의심 LN: ≥8–10 mm + 낭성, 고에코 석회화, 말초 혈관, 원형 형태 → FNA 권고.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R31C</span><span class="grade grade-gps">GPS</span></div>
+          <div class="rec-text">초기 치료 완료 후 <strong>6–12개월 경부 초음파</strong>. 이후 주기는 위험 분류 + 반응 기준에 따라 조정.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R49A</span><span class="grade grade-gps">GPS</span></div>
+          <div class="rec-text"><strong>반엽절제 또는 전절제(RAI없음) 환자: 감시 RAI WBS 불필요</strong>.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R50A</span><span class="grade grade-cond" data-tip="Conditional / Moderate">Cond.</span></div>
+          <div class="rec-text"><strong>18FDG-PET/CT</strong>: 고위험 DTC + Tg↑ (특히 &gt;10 ng/mL) + RAI WBS 음성. 특히 OTC, 고위험 조직형, 음성 RAI 영상력. 민감도 86%, 특이도 84%.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R51</span><span class="grade grade-gps">GPS</span></div>
+          <div class="rec-text"><strong>동적 위험 재분류(반응 추적)</strong>: 초기 위험 분류 + 반응 기준을 지속적으로 결합하여 개인화된 추적 강도 결정.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 모니터링 탈강화 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📉</span> 저위험 DTC 모니터링 탈강화 (R48) <span class="tag-new">NEW</span></div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-success" style="margin-bottom:8px">
+        <span>✅</span>
+        <div>저위험 DTC에서 <strong>지속적인 excellent response</strong> 확인 시 모니터링 단계적 탈강화 가능.</div>
+      </div>
+      <div class="step-flow">
+        <div class="step-box">
+          <div class="step-num">1</div>
+          <div class="step-content"><strong>5–8년 후: 초음파 중단 가능</strong><br>
+          조건: 저위험 DTC + 전갑상선절제+RAI + 지속 excellent response<br>
+          <span class="grade grade-cond" data-tip="Conditional / Low">Conditional / Low</span>: 이후 생화학 지표만으로 1–2년 간격 추적</div>
+        </div>
+        <div class="step-box">
+          <div class="step-num">2</div>
+          <div class="step-content"><strong>10–15년 후: 갑상선암 모니터링 종료 가능</strong><br>
+          조건: 저위험 DTC + 전갑상선절제+RAI + 지속 excellent response<br>
+          <span class="grade grade-cond" data-tip="Conditional / Low">Conditional / Low</span>: 더 이상 일상적 생화학 갑상선암 모니터링 불필요</div>
+        </div>
+      </div>
+      <div class="alert alert-warn" style="margin-top:6px">
+        <span>⚠️</span>
+        <div>탈강화는 저위험+excellent response 환자에만 해당. 중간위험 이상이거나 incomplete response인 경우 지속 추적 필요.</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /followup -->
+
+<!-- ═══════════ TAB 6: 진행성 DTC (RAIR) ═══════════ -->
+<div id="tab-advanced" class="panel">
+
+  <div class="alert alert-info">
+    <span>📌</span>
+    <div><strong>2025 핵심 원칙 (R61)</strong>: 진행성 RAIR DTC에서 <strong>분자검사(NGS) 먼저</strong> 시행 후 actionable driver mutation 존재 시 해당 표적치료 우선. FDA 승인 biomarker-linked therapy 다수.</div>
+  </div>
+
+  <!-- 분자검사 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧬</span> 분자검사 및 진행성 DTC 치료 결정 (R61)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-success" style="margin-bottom:8px">
+        <span>📌</span>
+        <div><strong>R61 (Strong, Moderate)</strong>: 진행성 RAIR DTC 전신치료 시작 전 <strong>조직 기반 바이오마커 검사 필수</strong>. 멀티진 패널 NGS 권장 (단일유전자 순차 검사 비권고).</div>
+      </div>
+      <table class="dtc-table">
+        <tr><th>분자이상</th><th>권장 1차 치료</th><th>권고</th></tr>
+        <tr><td><strong>NTRK fusion</strong></td><td>Larotrectinib 또는 Entrectinib</td><td><span class="grade grade-strong">Strong / Moderate</span> R67</td></tr>
+        <tr><td><strong>RET fusion</strong></td><td>Selpercatinib 또는 Pralsetinib</td><td><span class="grade grade-strong">Strong / High</span> R68</td></tr>
+        <tr><td><strong>ALK fusion</strong></td><td>Alectinib 또는 기타 ALK 억제제</td><td><span class="grade grade-cond">Conditional / Mod</span> R69</td></tr>
+        <tr><td><strong>BRAF<sup>V600E</sup></strong></td><td>Dabrafenib+Trametinib (BRAF+MEK)</td><td><span class="grade grade-cond">Conditional / Mod</span> R70</td></tr>
+        <tr><td><strong>MSI-H / dMMR</strong></td><td>Pembrolizumab (면역관문억제제)</td><td><span class="grade grade-gps">GPS</span> R73</td></tr>
+        <tr><td><strong>actionable driver 없음</strong></td><td>Lenvatinib (대부분) 또는 Sorafenib</td><td><span class="grade grade-strong">Strong / High</span> R62</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- MKI 1차 치료 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>💊</span> MKI 1차 치료: Lenvatinib vs Sorafenib (R62–R65)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="grid2">
+        <div>
+          <div style="font-weight:600;font-size:12px;color:var(--accent2);margin-bottom:5px">Lenvatinib (SELECT 연구)</div>
+          <table class="dtc-table">
+            <tr><th>항목</th><th>내용</th></tr>
+            <tr><td>용량 (R64A)</td><td><strong>24 mg/일</strong> (1일 1회, 강력권고)</td></tr>
+            <tr><td>PFS 개선</td><td>18.3개월 vs 3.6개월 (위약)</td></tr>
+            <tr><td>ORR</td><td>64.8%</td></tr>
+            <tr><td>폐 전이 ≥1 cm</td><td>OS 개선 44.7 vs 33.1개월</td></tr>
+          </table>
+          <div class="alert alert-warn" style="margin-top:6px">
+            <span>⚠️</span>
+            <div>R63: 증상 있는 RAIR DTC → 지체 없이 시작. 고령·체중 감소·전신 상태 불량 시 낮은 시작 용량 고려 (R64B).</div>
+          </div>
+        </div>
+        <div>
+          <div style="font-weight:600;font-size:12px;color:var(--accent2);margin-bottom:5px">주요 부작용 관리 (R65)</div>
+          <table class="dtc-table">
+            <tr><th>부작용</th><th>관리</th></tr>
+            <tr><td>고혈압</td><td>항고혈압제, 용량 감소</td></tr>
+            <tr><td>단백뇨</td><td>정기 소변 검사, 중증 시 중단</td></tr>
+            <tr><td>수족 피부 반응</td><td>요소 크림, 족부 관리, 감소/중단</td></tr>
+            <tr><td>설사</td><td>수분 섭취, 식이 조절, loperamide</td></tr>
+            <tr><td>피로·체중감소</td><td>용량 감소, 지지 치료</td></tr>
+          </table>
+          <div class="alert alert-info" style="margin-top:6px">
+            <span>💡</span>
+            <div>치료 시작 후 <strong>첫 2개월: 최소 2주마다 평가</strong>. 이후 1–2개월 간격. 부작용 관리가 MKI 지속의 핵심.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2차 치료 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔄</span> 2차 치료: Cabozantinib (R66) <span class="tag-new">NEW 강력권고</span></div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-success">
+        <span>✅</span>
+        <div><strong>R66 (Strong, High)</strong>: 이전 MKI 진행 또는 불내성 RAIR DTC (actionable driver 없음) → <strong>Cabozantinib 2차 치료</strong>.</div>
+      </div>
+      <div class="grid2" style="margin-top:8px">
+        <div>
+          <div style="font-weight:600;font-size:12px;color:var(--accent2);margin-bottom:5px">COSMIC-311 근거</div>
+          <ul style="list-style:none;font-size:12px;line-height:1.8">
+            <li>• Phase III (cabozantinib 60 mg vs 위약)</li>
+            <li>• ≤2회 이전 MKI 허용</li>
+            <li>• PFS: 11개월 vs 1.9개월 (HR 0.22)</li>
+            <li>• ORR: 15%</li>
+            <li>• 위약군 교차(crossover) 허용</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-weight:600;font-size:12px;color:var(--accent2);margin-bottom:5px">기타 2차 이상 옵션</div>
+          <ul style="list-style:none;font-size:12px;line-height:1.8">
+            <li>• 1차 Lenvatinib → 2차 Sorafenib (또는 vice versa)</li>
+            <li>• 유전자 특이 치료: BRAF/MEK 억제제, RET/NTRK 등</li>
+            <li>• 재분화 치료 (R74): MEKi 등으로 RAI 재친화 시도</li>
+            <li>• 면역관문억제제 (R73, Conditional): MSI-H 또는 임상시험</li>
+            <li>• 세포독성 항암제 (R75, Conditional): 매우 제한적</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 올리고전이 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🎯</span> 올리고전이 및 부위 특이 치료 (R76–R79)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul class="rec-list">
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R76</span><span class="grade grade-cond">Cond.</span></div>
+          <div class="rec-text"><strong>올리고전이</strong>: 국소 치료 (절제, 열치료, SBRT, 에탄올 주사) 고려. 전신 치료 병용 또는 대기 전략.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R77</span><span class="grade grade-gps">GPS</span></div>
+          <div class="rec-text"><strong>부위 특이 증상 병변</strong>: 기도/식도 압박 → 절제 또는 EBRT. 척수 압박 → 응급 수술/방사선.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R78</span><span class="grade grade-cond">Cond.</span></div>
+          <div class="rec-text"><strong>골 지향 치료</strong>: 골 전이 + 증상 또는 절박 골절 위험 → Denosumab 또는 Zoledronic acid 고려.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R79</span><span class="grade grade-cond">Cond.</span></div>
+          <div class="rec-text"><strong>뇌 전이</strong>: 정위적 방사선수술(SRS) 또는 전뇌방사선치료(WBRT). 단발성/소수: SRS 선호. 전신 치료와 병용.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /advanced -->
+
+<!-- ═══════════ TAB 7: 특수상황 ═══════════ -->
+<div id="tab-special" class="panel">
+
+  <!-- 임산부 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🤰</span> 임신 중 DTC 관리 (R81)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <div class="alert alert-danger">
+        <span>⛔</span>
+        <div>임신 중 RAI 투여 절대 금기. 수유 중 RAI 투여 금지 (유방 집중). 수유 중단 후 <strong>최소 3개월 후 RAI 투여</strong>.</div>
+      </div>
+      <table class="dtc-table" style="margin-top:8px">
+        <tr><th>상황</th><th>접근법</th></tr>
+        <tr><td>임신 중 신규 DTC 진단</td><td>대부분 관찰 또는 출산 후 수술. 수술 필요 시 임신 2분기 선호.</td></tr>
+        <tr><td>출산 후 RAI 시작</td><td>RAI 후 <strong>최소 6개월 후 임신</strong> (선천성 기형 OR 1.74). 더 일찍 임신 시 위험 증가.</td></tr>
+        <tr><td>남성 생식 기능</td><td>단일 RAI 후 임시 정자 감소; 6개월 회복. 누적 ≥14.8 GBq 시 정자 보관 고려.</td></tr>
+        <tr><td>TSH 목표 (임신 중)</td><td>저위험: 정상 범위 하한; 고위험: 0.1–0.5. 임신 특이 TSH 기준 적용.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 유전 검사 -->
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🧬</span> 유전 상담 및 생식세포 검사 (R2–R5) <span class="tag-new">EXPANDED</span></div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <ul class="rec-list">
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R2</span><span class="grade grade-gps">GPS</span></div>
+          <div class="rec-text"><strong>생식세포 유전검사 권고 대상</strong>: 증후군성 소견 (Cowden, FAP, Carney, DICER1 등), 가족력 있는 FTC/PTC, 2차 종양 동반.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R3</span><span class="grade grade-cond">Cond.</span></div>
+          <div class="rec-text"><strong>비증후군성 가족성 NMTC</strong>: 생식세포 검사 현재 일상적으로 권고하지 않음 (확인된 생식세포 돌연변이 드묾). 단, 분자연구 참여 고려.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R4</span><span class="grade grade-gps">GPS</span></div>
+          <div class="rec-text"><strong>가족성 NMTC 가족 구성원</strong>: 증상 없어도 초음파 선별 고려. 1–2년 간격.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R5</span><span class="grade grade-gps">GPS</span></div>
+          <div class="rec-text"><strong>체세포 검사에서 생식세포 돌연변이 의심 변이</strong> (PTEN, DICER1, APC, TP53 등): 생식세포 확인 검사 권고.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 생존자 관리 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🌱</span> 암 생존자 관리 (R82–R84)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul class="rec-list">
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R82</span><span class="grade grade-gps">GPS</span></div>
+          <div class="rec-text"><strong>장기 부작용 모니터링</strong>: 수술(성대·부갑상선 기능저하), RAI (타액선·누관·이차 악성종양), TSH 억제 (심방세동·골감소증) 등 치료 관련 장기 부작용 인식·관리.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R83</span><span class="grade grade-gps">GPS</span></div>
+          <div class="rec-text"><strong>재정 독성 (Financial Toxicity)</strong>: 진단·치료·모니터링 비용 부담 인식. 환자와 가족에게 재정 지원 자원 안내. <em>2025 가이드라인에서 처음 명시.</em></div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R84</span><span class="grade grade-gps">GPS</span></div>
+          <div class="rec-text"><strong>심리사회적 지원</strong>: 암 진단 관련 불안·우울·삶의 질 저하 흔함. 지원 서비스 안내 및 심리 전문가 의뢰 고려.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- EBRT 역할 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>☢️</span> 외부 방사선 치료(EBRT) 역할 (R44)</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <ul class="rec-list">
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R44A</span><span class="grade grade-cond" data-tip="Conditional / Low">Cond.</span></div>
+          <div class="rec-text"><strong>보조 EBRT</strong>: 고위험 DTC (고위험 조직형, 총갑상선 피막 외 침범, 절제연 양성, 내장/연조직 침범) + 구제 수술 불가한 국소 진행 예상 시 선택적 고려. OS 개선 미입증, 독성 주의.</div>
+        </li>
+        <li class="rec-item">
+          <div class="rec-badges"><span class="rec-num">R44B</span><span class="grade grade-cond" data-tip="Conditional / Low">Cond.</span></div>
+          <div class="rec-text"><strong>EBRT ± 항암제 (잔류/절제불가 국소병변)</strong>: 국소 조절 개선 가능. 독성(연하장애, 위루관 등) 위험 균형 고려. IMRT 표준 기술. 동시 항암 시 국소 조절 더 개선 가능.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div><!-- /special -->
+
+<!-- ═══════════ TAB 8: 권고 전체 ═══════════ -->
+<div id="tab-recs" class="panel">
+
+  <div class="card">
+    <div class="card-header open" onclick="toggleCard(this)">
+      <div class="ch-title"><span>📋</span> 전체 권고사항 (R1–R84) 요약</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body">
+      <!-- 섹션 1: 병리/진단 -->
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔬 병리·유전 (R1–R5)</span><span class="arr">▾</span></div>
+        <div class="acc-body">
+          <ul class="rec-list">
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R1</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">NIFTP는 임상적으로 갑상선암으로 분류하지 않는다.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R2</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">증후군성 DTC 등 고위험 환자에서 생식세포 유전검사 권고.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R3</span><span class="grade grade-cond">Cond./Low</span></div><div class="rec-text">비증후군성 가족성 NMTC에서 생식세포 검사 일상적으로 불필요.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R4</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">가족성 NMTC 가족 구성원: 초음파 선별 고려.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R5</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">체세포 검사에서 병원성 생식세포 변이 의심 시 확인 검사.</div></li>
+          </ul>
+        </div>
+      </div>
+      <!-- 섹션 2: 수술 전 -->
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🔍 수술 전 평가 (R6–R14)</span><span class="arr">▾</span></div>
+        <div class="acc-body">
+          <ul class="rec-list">
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R6</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">수술량이 많은 술자가 합병증률 낮음. 가능 시 경험 많은 술자 의뢰.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R7</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">수술 전 경부 초음파 + FNA (의심 LN ≥8–10mm, 관리 변경 가능 시). FNA-Tg washout 가능.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R8</span><span class="grade grade-cond">Cond./Low</span></div><div class="rec-text">T3b–T4 또는 원격전이 의심 시 단면 영상/18FDG-PET 선택적 적용.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R9</span><span class="grade grade-cond">Cond./Low</span></div><div class="rec-text">수술 전 혈청 Tg 일상적 측정 불필요.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R10</span><span class="grade grade-cond">Cond./Low</span></div><div class="rec-text">cT1–T2 cN0에서 수술 범위 결정에 수술 전 분자검사 고려 가능.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R11</span><span class="grade grade-cond">Cond./Mod</span></div><div class="rec-text">저위험 T1a PTC에서 능동 감시 대안 가능.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R12</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">능동 감시: 6–12개월 간격 초음파. 진행 시 수술 전환.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R13</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">능동 감시 중 Tg/TgAb 일상적 측정 권고 안 함.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R14</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">능동 감시 중 크기 증가 ≥3mm, 새 LN 전이 → 수술 전환 고려.</div></li>
+          </ul>
+        </div>
+      </div>
+      <!-- 섹션 3: 수술 -->
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>✂️ 수술 (R15–R27)</span><span class="arr">▾</span></div>
+        <div class="acc-body">
+          <ul class="rec-list">
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R15</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">수술 범위: cT1 단측→반엽절제; cT2 단측→반엽 또는 전절제(공유결정); cT3-4/N1/M1→전절제.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R16</span><span class="grade grade-cond">Cond./Mod</span></div><div class="rec-text">반엽절제 후 추가 전절제: 조직학적 고위험 소견, 양측 암, RAI 계획 시.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R19</span><span class="grade grade-cond">Cond./Low</span></div><div class="rec-text">예방적 중앙 LN 절제: T3–T4 또는 cN1b에서 선택적. T1–T2 cN0에서 일상적 불필요.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R20</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">치료적 LN 절제: 전이 확인 시 구획별 완전 절제.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R24</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">부갑상선 보존; 불가 시 자가이식. 전갑상선절제 후 PTH 기반 Ca/VitD 보충.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R25</span><span class="grade grade-cond">Cond./High</span></div><div class="rec-text">갑상선 절제창 배액: 일상적으로 권고하지 않음 (혈종 감소 효과 없음, 입원 연장, 감염 증가).</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R27</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">병리 보고: AJCC 병기 필수 + 혈관침범 수, LN 수/크기/ENE, 고위험 아형 명시.</div></li>
+          </ul>
+        </div>
+      </div>
+      <!-- 섹션 4: 위험분류/반응 -->
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📊 위험분류·반응평가 (R28–R31)</span><span class="arr">▾</span></div>
+        <div class="acc-body">
+          <ul class="rec-list">
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R28</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">2025 ATA 재발 위험 분류 (저/저-중간/중간-고/고위험). AJCC 병기 + 조직병리 + 수술 후 검사 통합.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R29</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">ATA 반응 기준 4가지 사용: Excellent / Indeterminate / Biochem.Incomplete / Structural Incomplete.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R30</span><span class="grade grade-cond">Cond./Mod</span></div><div class="rec-text">전갑상선절제 후 6–12주 Tg 측정 (갑상선호르몬 복용 중). 자극 Tg ≥30 → 불량 예후.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R31</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">경부 초음파 1차 영상; 6–12개월 후 초음파; Tg↑ 시 단면 영상/추가 검사.</div></li>
+          </ul>
+        </div>
+      </div>
+      <!-- 섹션 5: RAI -->
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>☢️ RAI (R32–R43)</span><span class="arr">▾</span></div>
+        <div class="acc-body">
+          <ul class="rec-list">
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R32A</span><span class="grade grade-strong">Strong/High</span></div><div class="rec-text"><strong>저위험: 잔여소각 일상적으로 불필요.</strong></div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R32B</span><span class="grade grade-cond">Cond./Low</span></div><div class="rec-text">저-중간/중간-고위험: RAI 보조요법 고려 가능.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R32C</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text"><strong>고위험: RAI 일상적으로 권고.</strong></div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R34A</span><span class="grade grade-strong">Strong/High</span></div><div class="rec-text">잔여소각/보조요법 시 rhTSH 자극 선호. 목표 TSH &gt;30 mIU/L.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R35</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">저요오드 식이 (~1–2주, &lt;50 mcg/일).</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R37</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">치료 후 WBS 시행 (치료 2–10일 후).</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R55A</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">&gt;70세 또는 신부전: 5.5 GBq 초과 전 선량측정 필수.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R59</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">RAIR 확인 시 추가 경험적 RAI 금지. 전신 치료 전환.</div></li>
+          </ul>
+        </div>
+      </div>
+      <!-- 섹션 6: 장기 관리 -->
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>📈 장기 관리·추적 (R45–R52)</span><span class="arr">▾</span></div>
+        <div class="acc-body">
+          <ul class="rec-list">
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R45</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">TSH 억제: 고위험/구조적 불완전 → &lt;0.1; 중간-고위험/생화학 불완전 → 0.1–0.5; 저위험 excellent → 정상 범위.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R46</span><span class="grade grade-cond">Cond./Low</span></div><div class="rec-text">재발 없는 저/중간위험: 장기 TSH 억제 권고 안 함. 위험-이익 재평가.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R47</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">BCR457 기준 Tg 측정; 매번 TgAb 동반 측정.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R48-1</span><span class="grade grade-cond">Cond./Low</span></div><div class="rec-text">저위험+excellent response 5–8년: 초음파 중단, 생화학만 1–2년 간격.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R48-2</span><span class="grade grade-cond">Cond./Low</span></div><div class="rec-text">저위험+excellent response 10–15년: 갑상선암 모니터링 종료 가능.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R51</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">동적 위험 재분류: 반응 기준 + 초기 위험 통합하여 개인화 추적.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R52</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">국소 재발/잔류 → 절제 또는 에탄올 소작. 재수술 결정은 크기, 위치, 성장 속도, 환자 요소 통합.</div></li>
+          </ul>
+        </div>
+      </div>
+      <!-- 섹션 7: 진행성 DTC -->
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>💊 진행성 RAIR DTC (R61–R80)</span><span class="arr">▾</span></div>
+        <div class="acc-body">
+          <ul class="rec-list">
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R61</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">전신치료 전 멀티진 NGS 필수. actionable driver 확인 후 표적 치료 우선.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R62</span><span class="grade grade-strong">Strong/High</span></div><div class="rec-text">Actionable driver 없는 진행성 RAIR: Lenvatinib (우선) 또는 Sorafenib.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R63</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">증상성 RAIR → 지체 없이 MKI 시작.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R64A</span><span class="grade grade-strong">Strong/High</span></div><div class="rec-text">Lenvatinib 시작 용량: 24 mg/일 (대부분). 선택 환자에서 낮은 시작 용량 가능.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R65</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">MKI 부작용 관리: 치료 시작 후 2개월 동안 2주마다 평가. 예방·완화·용량 조절.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R66</span><span class="grade grade-strong">Strong/High</span></div><div class="rec-text"><strong>Cabozantinib: 이전 MKI 진행 후 2차 치료.</strong> (COSMIC-311)</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R67</span><span class="grade grade-strong">Strong/Mod</span></div><div class="rec-text">NTRK fusion: Larotrectinib 또는 Entrectinib 1차.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R68</span><span class="grade grade-strong">Strong/High</span></div><div class="rec-text">RET fusion: Selpercatinib 또는 Pralsetinib 1차.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R69</span><span class="grade grade-cond">Cond./Mod</span></div><div class="rec-text">ALK fusion: Alectinib 등 ALK 억제제 1차.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R70</span><span class="grade grade-cond">Cond./Mod</span></div><div class="rec-text">BRAF<sup>V600E</sup>: Dabrafenib+Trametinib 1차.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R73</span><span class="grade grade-cond">Cond./Low</span></div><div class="rec-text">면역관문억제제: MSI-H/dMMR DTC에서 고려. PD-L1 일상적 바이오마커 아님.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R74</span><span class="grade grade-cond">Cond./Low</span></div><div class="rec-text">재분화 치료 (예: MEKi → RAI): 일부 환자에서 RAI 재친화 가능.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R80</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">임상시험 참여 적극 권장. 특히 RAIR DTC, 고위험 특징.</div></li>
+          </ul>
+        </div>
+      </div>
+      <!-- 섹션 8: 생존자 -->
+      <div class="acc">
+        <div class="acc-hdr" onclick="toggleAcc(this)"><span>🌱 생존자 관리 (R81–R84)</span><span class="arr">▾</span></div>
+        <div class="acc-body">
+          <ul class="rec-list">
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R81</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">임신 중 RAI 금지. RAI 후 ≥6개월 후 임신. 수유 중단 후 3개월 후 RAI.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R82</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">장기 치료 부작용 모니터링 및 적절한 개입/의뢰.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R83</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">재정 독성 인식; 환자·가족에게 지원 자원 안내.</div></li>
+            <li class="rec-item"><div class="rec-badges"><span class="rec-num">R84</span><span class="grade grade-gps">GPS</span></div><div class="rec-text">심리사회적 지원 서비스 안내 및 심리 전문가 의뢰 고려.</div></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 약어 전체 -->
+  <div class="card">
+    <div class="card-header" onclick="toggleCard(this)">
+      <div class="ch-title"><span>🔤</span> 약어 전체 목록</div>
+      <span class="toggle">▾</span>
+    </div>
+    <div class="card-body collapsed">
+      <div class="abbr-grid-main" id="abbr-grid-main"></div>
+    </div>
+  </div>
+
+</div><!-- /recs -->
+
+</div><!-- /main -->
+
+<script>
+// ── ABBR DATA ──
+const ABBRS = [
+  {t:'DTC',d:'Differentiated Thyroid Cancer — 분화갑상선암 (PTC+FTC+OTC)'},
+  {t:'PTC',d:'Papillary Thyroid Carcinoma — 유두갑상선암'},
+  {t:'FTC',d:'Follicular Thyroid Carcinoma — 여포갑상선암'},
+  {t:'OTC',d:'Oncocytic Thyroid Carcinoma — 호산성갑상선암 (구 Hürthle cell)'},
+  {t:'IEFVPTC',d:'Invasive Encapsulated Follicular Variant PTC — 침습성 피막형 여포변이 PTC'},
+  {t:'NIFTP',d:'Noninvasive Follicular Thyroid Neoplasm with Papillary-like nuclear features — 비침습성 여포성 종양'},
+  {t:'FUMP',d:'Follicular tumor of Uncertain Malignant Potential — 불확실한 악성 잠재력 여포성 종양'},
+  {t:'PDTC',d:'Poorly Differentiated Thyroid Carcinoma — 저분화갑상선암'},
+  {t:'DHGTC',d:'Differentiated High-Grade Thyroid Carcinoma — 분화 고등급 갑상선암'},
+  {t:'ATC',d:'Anaplastic Thyroid Carcinoma — 미분화갑상선암'},
+  {t:'ATA',d:'American Thyroid Association — 미국갑상선학회'},
+  {t:'DATA',d:'Diagnosis·risk/benefit Assessment·Treatment decisions·response Assessment — 2025 ATA 임상결정 프레임워크'},
+  {t:'RAI',d:'Radioactive Iodine (¹³¹I) — 방사성 요오드'},
+  {t:'RAIR',d:'Radioactive Iodine-Refractory — 방사성 요오드 불응성'},
+  {t:'WBS',d:'Whole Body Scan — 전신 스캔 (RAI)'},
+  {t:'SPECT/CT',d:'Single Photon Emission CT with CT — 단광자 방출 CT 융합 영상'},
+  {t:'rhTSH',d:'Recombinant Human TSH (Thyrotropin alfa) — 재조합 인간 TSH; 상품명 Thyrogen'},
+  {t:'Tg',d:'Thyroglobulin — 티로글로불린 (종양 표지자)'},
+  {t:'TgAb',d:'Anti-Thyroglobulin Antibody — 항티로글로불린 항체'},
+  {t:'TSH',d:'Thyroid Stimulating Hormone (Thyrotropin) — 갑상선 자극호르몬'},
+  {t:'FNA',d:'Fine Needle Aspiration — 세침흡인 세포검사'},
+  {t:'NGS',d:'Next-Generation Sequencing — 차세대 염기서열 분석'},
+  {t:'MKI',d:'Multi-Kinase Inhibitor — 다중 키나제 억제제 (lenvatinib, sorafenib 등)'},
+  {t:'VEGFR',d:'Vascular Endothelial Growth Factor Receptor — 혈관내피성장인자 수용체'},
+  {t:'NTRK',d:'Neurotrophic Receptor Tyrosine Kinase — 신경영양인자 수용체 타이로신 키나제'},
+  {t:'RET',d:'Rearranged during Transfection — RET 원발암유전자 융합'},
+  {t:'ALK',d:'Anaplastic Lymphoma Kinase — 역형성 림프종 키나제'},
+  {t:'BRAF',d:'B-Raf Proto-Oncogene — 비-라프 원발암유전자 (V600E 가장 흔함)'},
+  {t:'MAPK',d:'Mitogen-Activated Protein Kinase — 유사분열촉진 단백 키나제 경로'},
+  {t:'MSI-H',d:'Microsatellite Instability-High — 높은 현미부수체 불안정성'},
+  {t:'dMMR',d:'Deficient Mismatch Repair — 부족한 불일치 복구'},
+  {t:'ICI',d:'Immune Checkpoint Inhibitor — 면역관문억제제'},
+  {t:'AJCC',d:'American Joint Committee on Cancer — 미국 암 합동위원회 (병기 분류)'},
+  {t:'EBRT',d:'External Beam Radiation Therapy — 외부 방사선 치료'},
+  {t:'IMRT',d:'Intensity-Modulated Radiation Therapy — 세기조절 방사선 치료'},
+  {t:'SBRT',d:'Stereotactic Body Radiotherapy — 체부 정위 방사선 치료'},
+  {t:'SRS',d:'Stereotactic Radiosurgery — 정위적 방사선수술'},
+  {t:'ENE',d:'Extranodal Extension — 림프절 피막외 침범'},
+  {t:'CND',d:'Central Neck Dissection — 중앙 경부 림프절 절제'},
+  {t:'pCND',d:'Prophylactic Central Neck Dissection — 예방적 중앙 경부 림프절 절제'},
+  {t:'LN',d:'Lymph Node — 림프절'},
+  {t:'QoL',d:'Quality of Life — 삶의 질'},
+  {t:'FNMTC',d:'Familial Non-Medullary Thyroid Cancer — 가족성 비수질 갑상선암'},
+  {t:'RFA',d:'Radiofrequency Ablation — 고주파 열치료'},
+  {t:'MWA',d:'Microwave Ablation — 마이크로파 열치료'},
+  {t:'18FDG-PET',d:'18F-Fluorodeoxyglucose PET — 불소-18 포도당 양전자 방출 단층촬영'},
+  {t:'LT4',d:'Levothyroxine (T4) — 레보티록신'},
+  {t:'LT3',d:'Liothyronine (T3) — 리오티로닌'},
+  {t:'GBq',d:'Gigabecquerel — 기가베크렐 (RAI 활성도 단위; 1 GBq ≈ 27 mCi)'},
+  {t:'mCi',d:'Millicurie — 밀리퀴리 (구 RAI 단위; 1 mCi = 37 MBq)'},
+  {t:'GPS',d:'Good Practice Statement — 임상 합의 권고 (근거 제한적)'},
+  {t:'GRADE',d:'Grading of Recommendations Assessment, Development and Evaluation — 권고 등급 평가 체계'},
+];
+
+function renderAbbrs(list, target) {
+  target.innerHTML = list.map(a =>
+    `<div class="abbr-item"><span class="abbr-term">${a.t}</span><span class="abbr-def">${a.d}</span></div>`
+  ).join('');
+}
+const mainGrid = document.getElementById('abbr-grid-main');
+renderAbbrs(ABBRS, mainGrid);
+
+function filterAbbr(q) {
+  const inp = document.getElementById('abbr-input');
+  const drop = document.getElementById('abbr-dropdown');
+  const grid = document.getElementById('abbr-grid-drop');
+  const cnt  = document.getElementById('abbr-count');
+  if (!q.trim()) { drop.style.display='none'; cnt.textContent=''; return; }
+  const res = ABBRS.filter(a => a.t.toLowerCase().includes(q.toLowerCase()) || a.d.toLowerCase().includes(q.toLowerCase()));
+  cnt.textContent = res.length ? res.length : '';
+  grid.innerHTML = res.length ? res.map(a=>`<div class="abbr-item"><span class="abbr-term">${a.t}</span><span class="abbr-def">${a.d}</span></div>`).join('') : '<div style="font-size:12px;color:var(--text2);padding:8px">검색 결과 없음</div>';
+  const rect = inp.getBoundingClientRect();
+  drop.style.top = (rect.bottom+4)+'px';
+  drop.style.left = Math.max(4, rect.right-480)+'px';
+  drop.style.display = 'block';
+}
+document.addEventListener('click', e => {
+  if (!e.target.closest('.tab-abbr-wrap')) { document.getElementById('abbr-dropdown').style.display='none'; document.getElementById('abbr-count').textContent=''; }
+});
+
+function showTab(id) {
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+function toggleCard(hdr) {
+  const body = hdr.nextElementSibling;
+  body.classList.toggle('collapsed');
+  hdr.classList.toggle('open', !body.classList.contains('collapsed'));
+}
+function toggleAcc(hdr) {
+  const body = hdr.nextElementSibling;
+  const isOpen = body.style.display === 'block';
+  body.style.display = isOpen ? 'none' : 'block';
+  hdr.classList.toggle('open', !isOpen);
+}
+</script>
+</body>
+</html>
